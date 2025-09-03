@@ -2,6 +2,7 @@
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -10,16 +11,17 @@ namespace API.Controllers
     public class MembersController(AppDbContext context) : ControllerBase
     {
         [HttpGet]
-        public ActionResult<IReadOnlyList<AppUser>> GetMembers() // se puede usar list, IEnumerable o IReadOnly 
+        public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers() // se puede usar list, IEnumerable o IReadOnly 
         {
-            var members = context.Users.ToList(); //hace select de usuarios 
+            var members = await context.Users.ToListAsync();  //hace select de usuarios 
+
             return members;
         }
 
         [HttpGet("{id}")] // se pone un parametro en la ruta api/members/bob-id
-        public ActionResult<AppUser> GetMember(string id)
+        public async Task<ActionResult<AppUser>> GetMember(string id)
         {
-            var member = context.Users.Find(id); //hace select de usuario
+            var member = await context.Users.FindAsync(id); //hace select de usuario
 
             if (member == null) return NotFound();
 
