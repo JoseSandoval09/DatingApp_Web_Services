@@ -1,3 +1,10 @@
 <h1>Hello , {{ title() }}</h1>
+<div>
+    <ul>
+        @for (member of members(); track member.id){
+            <li>{{member.id}} - {{member.displayName}}</li>
 
-<h1>Hello , {{ title() }}</h1>
+        }
+    </ul>
+</div>
+
