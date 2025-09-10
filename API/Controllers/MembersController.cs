@@ -4,11 +4,10 @@ using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Controllers
-{
-    [Route("api/[controller]")] //localhost:5000/api/members
-    [ApiController]
-    public class MembersController(AppDbContext context) : ControllerBase
+namespace API.Controllers;
+
+    
+    public class MembersController(AppDbContext context) : BaseApiController
     {
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers() // se puede usar list, IEnumerable o IReadOnly 
@@ -29,4 +28,3 @@ namespace API.Controllers
         }
 
     }
-}
