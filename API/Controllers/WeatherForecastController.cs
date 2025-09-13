@@ -2,9 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("api/v1/[controller]")] //se quita controller en ruta
-public class WeatherForecastController : ControllerBase //ruta
+public class WeatherForecastController : BaseApiController
 {
     private static readonly string[] Summaries = new[]
     {

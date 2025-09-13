@@ -4,7 +4,7 @@ namespace API.Entities;
 
 public class AppUser
 {
-    public required string Id { get; set; } = Guid.NewGuid().ToString();
+    public string Id { get; set; } = Guid.NewGuid().ToString();
 
     public required string DisplayName { get; set; } //? = puede ser nulo u opcional 
 
