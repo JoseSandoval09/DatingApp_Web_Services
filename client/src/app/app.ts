@@ -2,11 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
+import { Nav } from "../layout/nav/nav";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
+  imports: [Nav],
 })
 export class App implements OnInit {
   private http: HttpClient = inject(HttpClient);
