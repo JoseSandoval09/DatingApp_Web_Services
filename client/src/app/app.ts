@@ -4,12 +4,13 @@ import { RouterOutlet } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { Nav } from "../layout/nav/nav";
 import { AccountService } from '../core/services/account-service';
+import { Home } from "../features/home/home";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
-  imports: [Nav],
+  imports: [Nav, Home],
 })
 export class App implements OnInit {
   private accountService = inject(AccountService);
