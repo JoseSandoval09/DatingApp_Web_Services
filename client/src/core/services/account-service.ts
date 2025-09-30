@@ -13,7 +13,7 @@ export class AccountService {
 
   baseUrl = 'https://localhost:7131/api/';
 
-  register(creds: RegisterCreds){
+  register(creds: RegisterCreds) : Observable<User> {
     return this.https.post<User>(this.baseUrl + 'account/register', creds).pipe(
       tap(user => {
         if (user){
