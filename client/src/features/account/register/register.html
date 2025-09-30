@@ -5,14 +5,6 @@
             <input type="text" class="input w-full" name="email" [ngModel]="creds.email" placeholder="Email">
             <input type="text" class="input w-full" name="displayName" [ngModel]="creds.displayName" placeholder="Display Name">
             <input type="password" class="input w-full" name="password" [ngModel]="creds.password" placeholder="password">
-
-            <select class="select w-full ">
-                <option disable selected >Pick a member</option>
-                @for(member of membersFromHome(); track $index){
-                <option value="{{member.id}}">{{member.displayName}}</option>
-                }
-            </select>
-
             <div class="flex items-center justify-end gap-3">
                 <button class="btn" type="button" (click)="cancel()">Cancel</button>
                 <button class="btn btn-primary" type="submit">Register</button>
