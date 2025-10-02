@@ -9,9 +9,11 @@
       <h3 routerLink="/" class="text-2xl font-semibold text-white uppercase">Dating App</h3>
     </a>
     <nav class="flex gap-3 my-2 text-lg text-white">
+     @if (accountService.currentUser()) {
       <a routerLink="/members" routerLinkActive="text-accent">Matched</a>
       <a routerLink="/lists" routerLinkActive="text-accent">Lists</a>
       <a routerLink="/messages" routerLinkActive="text-accent">Messages</a>
+     }
     </nav>
     <div class="flex justify-end ml-auto gap-3">
       @if (accountService.currentUser(); as user ) {
