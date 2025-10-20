@@ -22,10 +22,10 @@ public class Seed {
             return;
         }
 
-        using var hmac = new HMACSHA512();
-
+        
         foreach (var seedUser in seedUsers)
         {
+            using var hmac = new HMACSHA512();
             var user = new AppUser
             {
                 Id = seedUser.Id,
@@ -54,6 +54,8 @@ public class Seed {
                 Url = seedUser.ImageUrl!,
                 MemberId = seedUser.Id
             });
+
+            context.Users.Add(user);
 
         }
 
