@@ -1,28 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1one</title>
-    <link rel="stylesheet" href="/src/styles.css">
-</head>
-<body>
 
-    <div class="card bg-base-100 w-1/2 mx-auto p-10 mt-10 shadow-xl">
-        <h3 class="text-3xl text-red-500">{{ title() }}</h3>
-        <ul class="list">
-            @for (member of members(); track member.id){
-                <li class="list-row items-center">
-                    <img class="size-12 rounded-full" src="/user.png" alt="">
-                    <div>
-                        {{member.displayName}}
-                    </div>
-                </li>
-            }
-        </ul>
-    </div>
+
+<app-nav/>
+<div
+  class="max-w-11/12"
+  [class.mt-24]="router.url !== '/'"
+  [class.container]="router.url !== '/'"
+  [class.mx-auto]="router.url !== '/'">
+  <router-outlet />
+</div>
 
     
-</body>
-</html>
 
