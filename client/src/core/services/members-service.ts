@@ -14,11 +14,11 @@ export class MembersService {
   private accountService = inject(AccountService);
 
   getMember(id: string): Observable<Member> {
-    return this.http.get<Member>(this.baseUrl + "members/" + id, this.getHttpOptions())
+    return this.http.get<Member>(this.baseUrl + "members/" + id)
   }
 
   getMembers(): Observable<Member[]> {
-    return this.http.get<Member[]>(this.baseUrl + "members", this.getHttpOptions());
+    return this.http.get<Member[]>(this.baseUrl + "members");
   }
 
   private getHttpOptions() {
