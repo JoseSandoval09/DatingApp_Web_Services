@@ -1,8 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MembersService } from '../../../core/services/members-service';
-import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { Member } from '../../../types/member';
 
 @Component({
@@ -14,10 +14,21 @@ import { Member } from '../../../types/member';
 export class MemberDetail implements OnInit {
   private memberService = inject(MembersService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   protected member$?: Observable<Member>;
+  protected title = signal<string | undefined>('Profile');
 
   ngOnInit(): void {
     this.member$ = this.loadMember();
+    this.title.set(this.route.firstChild?.snapshot?.title);
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+    ).subscribe({
+      next: () => {
+        this.title.set(this.route.firstChild?.snapshot?.title);
+      }
+    })
   }
 
   loadMember(): Observable<Member> | undefined {
