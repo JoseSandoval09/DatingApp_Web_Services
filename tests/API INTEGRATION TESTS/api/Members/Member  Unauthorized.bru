@@ -1,0 +1,33 @@
+meta {
+  name: Member  Unauthorized
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/members
+  body: none
+  auth: bearer
+}
+
+headers {
+  Authorization: {{authToken}}
+}
+
+auth:bearer {
+  token: 
+}
+
+tests {
+  test("should return unauthorized", function(){
+    expect(res.getStatus()).to.equal(401);
+  })
+  
+  
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
