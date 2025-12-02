@@ -1,0 +1,47 @@
+meta {
+  name: Members valid
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/members
+  body: none
+  auth: bearer
+}
+
+headers {
+  Authorization: {{authToken}}
+}
+
+auth:bearer {
+  token: {{authToken}}
+}
+
+tests {
+  test("should return members", function(){
+    expect(res.getStatus()).to.equal(200);
+  })
+  
+  test("should return 10 members", function(){
+    const jsonData = res.getBody();
+    const firstMember = jsonData[0];
+    
+    expect(firstMember).to.have.property("id");
+    expect(firstMember).to.have.property("displayName");
+    
+    expect(firstMember.id).to.equal("arenita-id");
+    expect(firstMember.displayName).to.equal("Arenita");
+    
+    
+    
+    
+    
+    //expect(Array.isArray(data)).to.be.true;
+  })
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

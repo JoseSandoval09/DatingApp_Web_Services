@@ -4,7 +4,7 @@ using API.Interfaces;
 
 namespace API.Extensions;
 
-public static class AppUserExtensions
+public static class AppUserMapper
 {
     public static UserResponse ToDto(this AppUser user, ITokenService tokenService)
     {
@@ -12,6 +12,7 @@ public static class AppUserExtensions
         {
             Id = user.Id,
             Email = user.Email,
+            ImageUrl = user.ImageUrl,
             DisplayName = user.DisplayName,
             Token = tokenService.CreateToken(user)
         };
