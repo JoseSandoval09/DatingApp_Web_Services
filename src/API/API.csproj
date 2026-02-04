@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -14,8 +14,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.14.0" />
-    <PackageReference Include="NSwag.AspNetCore" Version="14.6.2" />
-    <PackageReference Include="NSwag.MSBuild" Version="14.6.2" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.6.3" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.6.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
   </ItemGroup>
 
@@ -36,7 +36,9 @@
     </ItemGroup>
   </Target>
   <Target Name="NSwagSpec" AfterTargets="Build">
-    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" WorkingDirectory="../../nswag/document-generator" Command="$(NSwagExe_Net90) run openapi.nswag /variables:Configuration=$(Configuration),Project=$(MSBuildProjectDirectory)/$(MSBuildProjectFile),MsBuildOutputPath=$(MSBuildProjectDirectory)/$(OutDir)" />
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" 
+        WorkingDirectory="../../nswag/document-generator" 
+        Command="nswag run openapi.nswag /variables:Configuration=$(Configuration),Project=$(MSBuildProjectFullPath),MsBuildOutputPath=$(TargetDir)" />
   </Target>
 
 </Project>
