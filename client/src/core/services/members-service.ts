@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Member } from '../../types/member';
 import { Observable } from 'rxjs';
@@ -13,6 +13,8 @@ import { photo } from '../../types/member';
 export class MembersService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl;
+  editMode = signal(false);
+  
   private accountService = inject(AccountService);
   
 
