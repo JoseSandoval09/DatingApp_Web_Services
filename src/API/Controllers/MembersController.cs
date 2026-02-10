@@ -3,6 +3,7 @@ using System.Security.Claims;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,15 +40,12 @@ public class MembersController(IMembersRepository membersRepository) : BaseApiCo
     [HttpPut]
     public async Task<ActionResult> UpdateMember(MemberUpdateRequest request)
     {
-        var memberId = User.FindFirstValue(ClaimTypes.NameIdentifier); // obtiene el id del usuario logueado
-
-        if(memberId == null) return BadRequest("No id found in token");
-
-        var member =await membersRepository.GetMemberAsync(memberId); // obtiene el usuario logueado
+        var memberId= User.GetMemberId(); // obtiene el id del usuario logueado a traves de los claims
+        var member = await membersRepository.GetMemberForUpdate(memberId); // hace select del usuario logueado
 
         if (member == null) return BadRequest("Failed to get member");
 
-        member.DisplayName = request.DisplayName ?? member.DisplayName;
+        member.DisplayName = request.DisplayName ?? member.User.DisplayName;
         member.Description = request.Description ?? member.Description;
         member.City = request.City ?? member.City;
         member.Country = request.Country ?? member.Country;
