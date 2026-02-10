@@ -10,7 +10,7 @@
   </div>
   <h3 class="text-lg font-semibold text-primary">About {{member.displayName}}</h3>
   @if (membersService.editMode()) {
-    <form #MemberProfileEditForm="ngForm" (ngSubmit)="updateProfile" class="flex flex-col w-full gap-4">
+    <form #MemberProfileEditForm="ngForm" (ngSubmit)="updateProfile()" class="flex flex-col w-full gap-4">
       <label class="floating-label" >
         <span>displayName</span>
         <input class="input w-full " type="text" name="displayName" [(ngModel)]="editablemember.displayName" 
