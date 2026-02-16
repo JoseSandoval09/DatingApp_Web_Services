@@ -17,6 +17,7 @@ public class MembersController(IMembersRepository membersRepository) : BaseApiCo
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<Member>>> GetMembers() // se puede usar list, IEnumerable o IReadOnly 
     {
+        
         return Ok(await membersRepository.GetMembersAsync());
     }
 
