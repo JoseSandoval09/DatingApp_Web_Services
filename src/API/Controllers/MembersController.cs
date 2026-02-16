@@ -41,7 +41,7 @@ public class MembersController(IMembersRepository membersRepository) : BaseApiCo
     public async Task<ActionResult> UpdateMember(MemberUpdateRequest request)
     {
         var memberId= User.GetMemberId(); // obtiene el id del usuario logueado a traves de los claims
-        var member = await membersRepository.GetMemberForUpdate(memberId); // hace select del usuario logueado
+        var member = await membersRepository.GetMemberForUpdateAsync(memberId); // hace select del usuario logueado
 
         if (member == null) return BadRequest("Failed to get member");
 

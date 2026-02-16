@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal, Signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Member } from '../../types/member';
+import { Editablemember, Member } from '../../types/member';
 import { Observable } from 'rxjs';
 import { AccountService } from './account-service';
 import { photo } from '../../types/member';
@@ -28,5 +28,9 @@ export class MembersService {
 
   getPhotos(id:string){
     return this.http.get<photo[]>(`${this.baseUrl}members/${id}/photos`);
+  }
+
+  updateMember(member: Editablemember){
+    return this.http.put(this.baseUrl + "members", member);
   }
 }
