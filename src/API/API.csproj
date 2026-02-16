@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.28.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8" />
@@ -36,9 +37,7 @@
     </ItemGroup>
   </Target>
   <Target Name="NSwagSpec" AfterTargets="Build">
-    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" 
-        WorkingDirectory="../../nswag/document-generator" 
-        Command="nswag run openapi.nswag /variables:Configuration=$(Configuration),Project=$(MSBuildProjectFullPath),MsBuildOutputPath=$(TargetDir)" />
+    <Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" WorkingDirectory="../../nswag/document-generator" Command="nswag run openapi.nswag /variables:Configuration=$(Configuration),Project=$(MSBuildProjectFullPath),MsBuildOutputPath=$(TargetDir)" />
   </Target>
 
 </Project>
