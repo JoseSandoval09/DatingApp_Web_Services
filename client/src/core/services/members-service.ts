@@ -43,4 +43,8 @@ export class MembersService {
     return this.http.post<photo>(this.baseUrl + "members/photo", formData);
   }
 
+  setMainPhoto(photo: photo){
+    return this.http.put(this.baseUrl + "members/photo/" + photo.id,{});
+  }
+
 }

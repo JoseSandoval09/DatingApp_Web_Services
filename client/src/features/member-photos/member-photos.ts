@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MembersService } from '../../core/services/members-service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { photo } from '../../types/member';
+import { Member, photo } from '../../types/member';
 import { ImageUpload } from '../../shared/image-upload/image-upload';
+import { User } from '../../types/user';
+import { AccountService } from '../../core/services/account-service';
 
 @Component({
   selector: 'app-member-photos',
@@ -14,6 +15,7 @@ import { ImageUpload } from '../../shared/image-upload/image-upload';
 })
 export class MemberPhotos implements OnInit {
   protected memberService = inject(MembersService);
+  protected accountService = inject(AccountService);
   private readonly route = inject(ActivatedRoute);
   protected photos = signal<photo[]>([]);
   protected loading = signal(false);
@@ -47,5 +49,21 @@ export class MemberPhotos implements OnInit {
       }
     });
 
+  }
+
+  setMainPhoto(photo: photo){
+    this.memberService.setMainPhoto(photo).subscribe({
+      next: () => {
+        const currentUser = this.accountService.currentUser();
+        if(currentUser){
+          currentUser.imageUrl = photo.url;
+        }
+        this.accountService.setCurrentUser(currentUser as User);
+        this.memberService.member.update(member => ({
+          ...member,
+          imageUrl: photo.url,
+        }) as Member);
+      }
+    });
   }
 }
