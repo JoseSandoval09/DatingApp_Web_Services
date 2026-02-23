@@ -5,6 +5,7 @@ import { Member } from '../../../types/member';
 import { AgePipe } from '../../../core/pipes/age-pipe';
 import { AccountService } from '../../../core/services/account-service';
 import { MembersService } from '../../../core/services/members-service';
+
 @Component({
   selector: 'app-member-detail',
   imports: [ RouterLink, RouterLinkActive, RouterOutlet, AgePipe],

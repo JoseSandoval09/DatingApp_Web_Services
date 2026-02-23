@@ -36,4 +36,11 @@ export class MembersService {
   updateMember(member: Editablemember){
     return this.http.put(this.baseUrl + "members", member);
   }
+
+  uploadPhoto(file: File){
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<photo>(this.baseUrl + "members/photo", formData);
+  }
+
 }
