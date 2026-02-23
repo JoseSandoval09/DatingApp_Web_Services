@@ -6,10 +6,11 @@ import { Member, photo } from '../../types/member';
 import { ImageUpload } from '../../shared/image-upload/image-upload';
 import { User } from '../../types/user';
 import { AccountService } from '../../core/services/account-service';
+import { IconButton } from "../../shared/icon-button/icon-button";
 
 @Component({
   selector: 'app-member-photos',
-  imports: [AsyncPipe, ImageUpload],
+  imports: [AsyncPipe, ImageUpload, IconButton],
   templateUrl: './member-photos.html',
   styleUrl: './member-photos.css'
 })
