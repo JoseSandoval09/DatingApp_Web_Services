@@ -7,10 +7,11 @@ import { ImageUpload } from '../../shared/image-upload/image-upload';
 import { User } from '../../types/user';
 import { AccountService } from '../../core/services/account-service';
 import { IconButton } from "../../shared/icon-button/icon-button";
+import { DeleteButton } from '../../shared/delete-button/delete-button';
 
 @Component({
   selector: 'app-member-photos',
-  imports: [AsyncPipe, ImageUpload, IconButton],
+  imports: [AsyncPipe, ImageUpload, IconButton, DeleteButton],
   templateUrl: './member-photos.html',
   styleUrl: './member-photos.css'
 })
@@ -64,6 +65,14 @@ export class MemberPhotos implements OnInit {
           ...member,
           imageUrl: photo.url,
         }) as Member);
+      }
+    });
+  }
+
+  deletePhoto(photoId: number) {
+    this.memberService.deletePhoto(photoId).subscribe({
+      next: () => {
+        this.photos.update(photos => photos.filter(p => p.id !== photoId))
       }
     });
   }

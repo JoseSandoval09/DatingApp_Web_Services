@@ -6,12 +6,20 @@
                 @for(photo of photos; track photo.id){
                     <div class="relative">
                         <img src="{{photo.url}}" alt="Member" class="w-full h-full "/>
-                        <app-icon-button
-`                           [disabled]="photo.url === memberService.member()?.imageUrl"
+                        @if (accountService.currentUser()?.id === memberService.member()?.id)
+                        {
+                            <app-delete-button
+                            [disabled]="photo.url === memberService.member()?.imageUrl"
+                            (clickEvent)="deletePhoto(photo.id)"
+                            class="absolute top-1 left-1"
+                            />
+                            <app-icon-button
+                            [disabled]="photo.url === memberService.member()?.imageUrl"
                             [selected]="photo.url === memberService.member()?.imageUrl"
-                            (clickEvent)="setMainPhoto(photo)"                        
-                        
-                        />
+                            (clickEvent)="setMainPhoto(photo)"
+                            class="absolute top-1 right-1"
+                            />
+                        }
                         
                     </div>
                     
