@@ -1,29 +1,51 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { RegisterCreds } from '../../../types/user';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AccountService } from '../../../core/services/account-service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, JsonPipe],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
-export class Register {
+export class Register implements OnInit {
   private accountService = inject(AccountService);
  
   cancelRegister = output<boolean>();
   protected creds = {} as RegisterCreds
+  protected registerForm: FormGroup = new FormGroup({});
+  cancelRegiste= output<boolean>();
+
+  private readonly EMAIL_REGEX = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm(){
+    this.registerForm = new FormGroup({
+      email: new FormControl(),
+      displayName: new FormControl(),
+      password: new FormControl(),
+      confirmPassword: new FormControl()
+    })
+  }
   
   register() : void{
-    this.accountService.register(this.creds).subscribe({
-      next: response => {
-        console.log(response);
-        this.cancel();
-      },
-      error: error => console.log(error)
 
-    })
+    console.group("REGISTER");
+    console.log(this.registerForm.value);
+    console.groupEnd();
+    //this.accountService.register(this.creds).subscribe({
+      //next: response => {
+        //console.log(response);
+        //this.cancel();
+      //},
+      //error: error => console.log(error)
+
+    //})
   }
 
   cancel() : void{
