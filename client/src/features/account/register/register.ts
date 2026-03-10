@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { RegisterCreds } from '../../../types/user';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, ValidatorFn, ValidationErrors, AbstractControl, FormBuilder} from '@angular/forms';
 import { AccountService } from '../../../core/services/account-service';
@@ -17,19 +17,28 @@ export class Register  {
  
   cancelRegister = output<boolean>();
   protected creds = {} as RegisterCreds
-  protected registerForm: FormGroup = new FormGroup({});
+  protected credentialsForm: FormGroup;
+  protected profileForm: FormGroup;
+  protected currentStep = signal(1);
   cancelRegiste= output<boolean>();
 
   constructor(){
-     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+     this.credentialsForm = this.fb.group({
+      email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$")]],
       displayName: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     });
 
-    this.registerForm.controls['password'].valueChanges.subscribe(() => {
-      this.registerForm.controls['confirmPassword'].updateValueAndValidity();
+    this.profileForm = this.fb.group({
+      gender: ['', Validators.required],
+      birthDay: ['', Validators.required],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+    });
+
+    this.credentialsForm.controls['password'].valueChanges.subscribe(() => {
+      this.credentialsForm.controls['confirmPassword'].updateValueAndValidity();
     });
 
 
@@ -47,20 +56,33 @@ export class Register  {
       return control.value === matchValue ? null : { passwordMismatch: true };
     }
   }
+
+  nextStep() {
+    if (this.credentialsForm.valid) {
+      this.currentStep.update(prevStep => prevStep + 1);
+    }
+  }
+
+  prevStep() {
+    this.currentStep.update(prevStep => prevStep - 1);
+  }
+
+  getMaxDate() {
+    const today = new Date();
+    today.setFullYear(today.getFullYear() - 18);
+    return today.toISOString().split('T')[0];
+  }
   
   register() : void{
 
     console.group("REGISTER");
-    console.log(this.registerForm.value);
-    console.groupEnd();
-    //this.accountService.register(this.creds).subscribe({
-      //next: response => {
-        //console.log(response);
-        //this.cancel();
-      //},
-      //error: error => console.log(error)
-
-    //})
+    console.log(this.credentialsForm.value);
+    console.log(this.profileForm.value);
+    console.log(this.currentStep());
+    if (this.credentialsForm.valid && this.profileForm.valid) {
+      const formData = { ...this.credentialsForm.value, ...this.profileForm.value };
+      console.log('Form data:', formData);
+    }
   }
 
   cancel() : void{
