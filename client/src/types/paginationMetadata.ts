@@ -1,6 +1,7 @@
 
 export type PaginationMetadata = {
-  pageNumber: number;
+
+  currentPage: number;
   pageSize: number;
   totalCount: number;
   totalPages: number;
