@@ -16,9 +16,9 @@ public class MembersController(IMembersRepository membersRepository, IPhotoServi
 {
     
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Member>>> GetMembers([FromQuery] PaginationRequest paginationRequest)
+    public async Task<ActionResult<IReadOnlyList<Member>>> GetMembers([FromQuery] MemberRequest request)
     {
-        return Ok(await membersRepository.GetMembersAsync(paginationRequest));
+        return Ok(await membersRepository.GetMembersAsync(request));
     }
 
    

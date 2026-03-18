@@ -7,7 +7,7 @@ namespace API.Interfaces;
     void Update(Member member);
 
     Task<bool> SaveAllAsync();
-    Task<PaginationResult<Member>> GetMembersAsync(PaginationRequest paginationRequest);
+    Task<PaginationResult<Member>> GetMembersAsync(MemberRequest request);
     Task<Member?> GetMemberAsync(string id);
 
     Task<IReadOnlyList<Photo>> GetPhotosAsync(string memberId);
