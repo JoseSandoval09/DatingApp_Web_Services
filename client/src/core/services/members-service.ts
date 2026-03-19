@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal, Signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Editablemember, Member } from '../../types/member';
+import { Editablemember, Member, MemberParams  } from '../../types/member';
 import { Observable, tap } from 'rxjs';
 import { AccountService } from './account-service';
 import { photo } from '../../types/member';
@@ -26,10 +26,13 @@ export class MembersService {
     )
   }
 
-  getMembers(pageNumber = 1, pageSize = 5): Observable<PaginationResult<Member>> {
+  getMembers(memberParams: MemberParams): Observable<PaginationResult<Member>> {
     let params = new HttpParams();
-    params = params.append('pageNumber', pageNumber);
-    params = params.append('pageSize', pageSize);
+    params = params.append('pageNumber', memberParams.pageNumber);
+    params = params.append('pageSize', memberParams.pageSize);
+    params = params.append('minAge', memberParams.minAge);
+    params = params.append('maxAge', memberParams.maxAge);
+    if (memberParams.gender) params = params.append('gender', memberParams.gender);
 
     return this.http.get<PaginationResult<Member>>(this.baseUrl + "members", { params });
   }
