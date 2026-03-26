@@ -19,12 +19,18 @@ export class MemberList implements OnInit {
   protected paginatedMembers = signal<PaginationResult<Member> | null>(null);
   protected memberParams = new MemberParams();
 
+  
+
    ngOnInit(): void {
     this.loadMembers();
   }
 
   constructor() {
-    this.loadMembers();
+    const filters = localStorage.getItem('filters');
+    if (filters) {
+      this.memberParams = JSON.parse(filters);
+      this.updatedParams = JSON.parse(filters);
+    }
   }
 
   loadMembers() {
