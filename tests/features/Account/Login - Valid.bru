@@ -23,7 +23,7 @@ tests {
   });
   
   const data = res.body;
-  bru.setEnvVar('authToken', data.token);
+  bru.setVar('authToken', data.token);
 }
 
 settings {

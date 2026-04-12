@@ -6,12 +6,13 @@ meta {
 
 post {
   url: {{baseUrl}}/api/likes/arenita-id
-  body: json
+  body: none
   auth: inherit
 }
 
 headers {
-  Authorization: Bearer {{bob_token}}
+  Authorization: Bearer {{otherToken}}
+
 }
 
 body:json {

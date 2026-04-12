@@ -23,21 +23,10 @@ tests {
   });
   
   const data = res.body;
-  bru.setEnvVar('arenitaToken', data.token);
+  bru.setVar('token', data.token);
 }
 
-script:post-response {
-  const user = res.getBody();
-  
-  test("Has properties", function () {
-      expect(user).to.have.property('username');
-      expect(user).to.have.property('token');
-  });
-  
-  if (test("Has properties")) {
-      bru.setGlobalEnvVar('token', user.token);
-  }
-}
+
 
 settings {
   encodeUrl: true
