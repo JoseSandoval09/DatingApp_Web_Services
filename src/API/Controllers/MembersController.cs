@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using API.Data;
 using API.DTOs;
+using API.Helpers;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
@@ -15,10 +16,10 @@ public class MembersController(IMembersRepository membersRepository, IPhotoServi
 {
     
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Member>>> GetMembers() // se puede usar list, IEnumerable o IReadOnly 
+    public async Task<ActionResult<IReadOnlyList<Member>>> GetMembers([FromQuery] MemberRequest request)
     {
-        
-        return Ok(await membersRepository.GetMembersAsync());
+        request.CurrentMemberId = User.GetMemberId();
+        return Ok(await membersRepository.GetMembersAsync(request));
     }
 
    
