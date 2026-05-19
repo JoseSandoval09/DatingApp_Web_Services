@@ -86,6 +86,7 @@ public static class Program
         {
             app.UseCors(x => x.AllowAnyHeader()
             .AllowAnyMethod()
+            .AllowCredentials()
             .WithOrigins(
                 "http://localhost:4200",
                 "https://localhost:4200"
