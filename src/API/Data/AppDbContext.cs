@@ -16,6 +16,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<MemberLike> Likes { get; set; }
 
+    public DbSet<Message> Messages { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
