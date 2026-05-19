@@ -77,7 +77,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
             return ValidationProblem();
         }
 
-        return user.ToDto(tokenService);
+        return await user.ToDto(tokenService);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
 
              if (!result) return Unauthorized("Invalid username or password");
 
-        return user.ToDto(tokenService);
+        return await user.ToDto(tokenService);
     }
 
     
