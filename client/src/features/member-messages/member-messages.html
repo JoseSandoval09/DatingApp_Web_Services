@@ -29,4 +29,11 @@
       </div>
     }
   </div>
+
+  <div class="flex join w-full">
+    <input [(ngModel)]="messageContent" class="input w-full" placeholder="Type a message to send..."
+      (keydown.enter)="sendMessage()">
+    <button (click)="sendMessage()" type="submit" class="btn btn-primary join-item">Send</button>
+  </div>
+  
 </div>
