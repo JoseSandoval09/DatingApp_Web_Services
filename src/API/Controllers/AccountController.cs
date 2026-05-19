@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using API.Interfaces;
 using API.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 
 
@@ -16,7 +17,7 @@ namespace API.Controllers;
 /// Account controller.
 /// </summary>
 
-public class AccountController(AppDbContext context, ITokenService tokenService) : BaseApiController
+public class AccountController(UserManager<AppUser> userManager, ITokenService tokenService) : BaseApiController
 {
 
     /// <summary>
@@ -47,9 +48,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
     {
 
 
-        if (await EmailExists(request.Email)) return BadRequest("Email is already taken");
-
-         using var hmac = new HMACSHA512();
+       
 
         var user = new AppUser
         {
@@ -66,8 +65,17 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
             }
         };
 
-        context.Users.Add(user);
-        await context.SaveChangesAsync();
+        var result = await userManager.CreateAsync(user, request.Password);
+
+        if (!result.Succeeded)
+        {
+            foreach(var error in result.Errors)
+            {
+                ModelState.AddModelError("identity", error.Description);
+            }
+
+            return ValidationProblem();
+        }
 
         return user.ToDto(tokenService);
     }
@@ -85,17 +93,17 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
     [HttpPost("login")]
     public async Task<ActionResult<UserResponse>> Login(LoginRequest request)
     {
-        var user = await context.Users.SingleOrDefaultAsync(u => u.Email == request.Email);
+        var user = await userManager.FindByEmailAsync(request.Email);
         if (user == null) return Unauthorized("Invalid email or password ");
 
         
-         return user.ToDto(tokenService);  
+            var result = await userManager.CheckPasswordAsync(user, request.Password);
+
+             if (!result) return Unauthorized("Invalid username or password");
+
+        return user.ToDto(tokenService);
     }
 
-    //Validacion de emails duplicados
-    private async Task<bool> EmailExists(string email)
-    {
-        return await context.Users.AnyAsync(u => u.Email!.ToLower() == email.ToLower());
-    }
+    
 
 }
