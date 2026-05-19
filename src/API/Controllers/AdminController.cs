@@ -28,6 +28,29 @@ public class AdminController(UserManager<AppUser> userManager) : BaseApiControll
         return Ok(usersList);
     }
 
+     [Authorize(Policy = "ModeratePhotoRole")]
+    [HttpPut("roles/{userId}")]
+    public async Task<ActionResult> EditRoles(string userId, [FromQuery] string roles)
+    {
+        if (string.IsNullOrEmpty(roles)) return BadRequest("You must provide at least one role");
+
+        var selectedRoles = roles.Split(",").ToArray();
+        var user = await userManager.FindByIdAsync(userId);
+
+        if (user == null) return BadRequest("Could not retrieve user");
+
+        var userRoles = await userManager.GetRolesAsync(user);
+        var result = await userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
+
+        if (!result.Succeeded) return BadRequest("Failed to add roles");
+
+        result = await userManager.RemoveFromRolesAsync(user, userRoles.Except(userRoles));
+
+        if (!result.Succeeded) return BadRequest("Failed to remove roles");
+
+        return Ok(await userManager.GetRolesAsync(user));
+    }
+
     [Authorize(Policy = "ModeratePhotoRole")]
     [HttpGet("photos-to-moderate")]
     public ActionResult GetPhotosForModeration()
