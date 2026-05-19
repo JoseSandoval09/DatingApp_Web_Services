@@ -73,7 +73,7 @@ public static class Program
         }
         catch (Exception ex)
         {
-            var logger = services.GetRequiredService<ILogger>();
+           var logger = services.GetRequiredService<ILogger<AppDbContext>>();
             logger.LogError(ex, "Migration process failed!");
         }
 

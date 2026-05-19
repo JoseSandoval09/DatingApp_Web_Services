@@ -3,6 +3,7 @@ using API.Entities;
 using API.Helpers;
 using API.Interfaces;
 using API.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
