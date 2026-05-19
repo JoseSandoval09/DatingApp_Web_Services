@@ -45,13 +45,13 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         .WithMany(mr => mr.MessagesSent)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Message>()
-        .Property(m => m.RecipientDeleted)
-        .HasDefaultValue(false);
+        // modelBuilder.Entity<Message>()
+        // .Property(m => m.RecipientDeleted)
+        // .HasDefaultValue(false);
 
-        modelBuilder.Entity<Message>()
-        .Property(m => m.SenderDeleted)
-        .HasDefaultValue(false);
+        // modelBuilder.Entity<Message>()
+        // .Property(m => m.SenderDeleted)
+        // .HasDefaultValue(false);
 
         
 
