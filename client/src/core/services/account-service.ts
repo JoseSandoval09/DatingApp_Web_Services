@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { LoginCreds, User } from '../../types/user';
+import { LoginCreds, RegisterCreds, User } from '../../types/user';
 import { Observable, tap } from 'rxjs';
-import { RegisterCreds } from '../../types/user';
 import { environment } from '../../environments/environment';
 import { LikesService } from './likes-service';
 
@@ -10,43 +9,59 @@ import { LikesService } from './likes-service';
   providedIn: 'root'
 })
 export class AccountService {
-  private https = inject(HttpClient);
+  private http = inject(HttpClient);
   private likesService = inject(LikesService);
   currentUser = signal<User | null>(null);
-
   baseUrl = environment.apiUrl;
 
-  register(creds: RegisterCreds) : Observable<User> {
-    return this.https.post<User>(this.baseUrl + 'account/register', creds).pipe(
+  register(creds: RegisterCreds): Observable<User> {
+    return this.http.post<User>(this.baseUrl + "account/register", creds, { withCredentials: true }).pipe(
       tap(user => {
-        if (user){
+        if (user) {
           this.setCurrentUser(user);
-          
+          this.startTokenRefreshInterval();
         }
       })
     );
   }
 
-  login(creds: LoginCreds) : Observable<User> {
-    return this.https.post<User>(this.baseUrl + 'account/login', creds).pipe(
+  login(creds: LoginCreds): Observable<User> {
+    return this.http.post<User>(this.baseUrl + "account/login", creds, { withCredentials: true }).pipe(
       tap(user => {
-        if (user){
+        if (user) {
           this.setCurrentUser(user);
-          
+          this.startTokenRefreshInterval();
         }
       })
     );
   }
 
-  setCurrentUser(user: User){
+  refreshToken() {
+    return this.http.post<User>(this.baseUrl + 'account/token', {}, { withCredentials: true });
+  }
+
+  startTokenRefreshInterval() {
+    setInterval(() => {
+      this.http.post<User>(this.baseUrl + 'account/token', {}, { withCredentials: true }).subscribe({
+        next: user => {
+          this.setCurrentUser(user);
+        },
+        error: () => {
+          this.logout();
+        }
+      })
+    }, 5 * 60 * 1000);
+  }
+
+  setCurrentUser(user: User) {
     user.roles = this.getRolesFromToken(user);
-    localStorage.setItem("user", JSON.stringify(user));
+
     this.currentUser.set(user);
     this.likesService.getLikeIds();
   }
 
-  logout(){
-    localStorage.removeItem("user");
+  logout() {
+
     localStorage.removeItem("filters");
     this.likesService.clearLikeIds();
     this.currentUser.set(null);
