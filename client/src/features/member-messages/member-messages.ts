@@ -18,14 +18,14 @@ export class MemberMessages implements OnInit {
   @ViewChild('messageEndRef') messageEndRef!: ElementRef;
   protected messagesService = inject(MessagesService);
   private membersService = inject(MembersService);
-  protected messages = signal<Message[]>([]);
+  private router = inject(ActivatedRoute);
+
   protected messageContent = '';
   protected presenceService = inject(PresenceService);
-  private router = inject(ActivatedRoute);
 
   constructor() {
     effect(() => {
-      const currentMessages = this.messages();
+      const currentMessages = this.messagesService.messageThread();
       if (currentMessages.length > 0) {
         this.scrollToBottom();
       }
@@ -42,30 +42,30 @@ export class MemberMessages implements OnInit {
     })
   }
 
-  loadMessages() {
-    const memberId = this.membersService.member()?.id;
-    if (memberId) {
-      this.messagesService.getMessageThread(memberId).subscribe({
-        next: messages => this.messages.set(messages.map(message => ({
-          ...message,
-          currentUserSender: message.senderId !== memberId
-        })))
-      })
-    }
-  }
+
+
+
+
+
+
+
+
+
+
+
 
   sendMessage() {
     const recipientId = this.membersService.member()?.id;
     if (!recipientId) return;
-    this.messagesService.sendMessage(recipientId, this.messageContent).subscribe({
-      next: message => {
-        this.messages.update(messages => {
-          message.currentUserSender = true;
-          return [...messages, message];
-        });
-        this.messageContent = '';
-      }
-    })
+    this.messagesService.sendMessage(recipientId, this.messageContent)?.then(() => {
+      this.messageContent = '';
+    });
+
+
+
+
+
+
   }
 
   scrollToBottom() {
