@@ -106,6 +106,7 @@ public static class Program
         app.UseAuthorization();
         app.MapControllers();
         app.MapHub<PresenceHub>("hubs/presence");
+        app.MapHub<MessageHub>("hubs/messages");
 
         app.Run();
     }
